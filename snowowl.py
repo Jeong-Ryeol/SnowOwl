@@ -147,18 +147,34 @@ class AutoClicker:
     def background_right_click(self):
         hwnd = self.find_ark_window()
         if hwnd:
-            x, y = win32gui.GetCursorPos()
-            client_x, client_y = win32gui.ScreenToClient(hwnd, (x, y))
-            win32gui.PostMessage(hwnd, win32con.WM_RBUTTONDOWN, 0, client_y << 16 | client_x)
+            # 창의 크기와 위치 가져오기
+            rect = win32gui.GetWindowRect(hwnd)
+            width = rect[2] - rect[0]
+            height = rect[3] - rect[1]
+            
+            # 창의 중앙 좌표 계산
+            center_x = width // 2
+            center_y = height // 2
+            
+            # 중앙 좌표로 클릭 이벤트 전송
+            win32gui.PostMessage(hwnd, win32con.WM_RBUTTONDOWN, 0, center_y << 16 | center_x)
             return True
         return False
     
     def release_right_click(self):
         hwnd = self.find_ark_window()
         if hwnd:
-            x, y = win32gui.GetCursorPos()
-            client_x, client_y = win32gui.ScreenToClient(hwnd, (x, y))
-            win32gui.PostMessage(hwnd, win32con.WM_RBUTTONUP, 0, client_y << 16 | client_x)
+            # 창의 크기와 위치 가져오기
+            rect = win32gui.GetWindowRect(hwnd)
+            width = rect[2] - rect[0]
+            height = rect[3] - rect[1]
+            
+            # 창의 중앙 좌표 계산
+            center_x = width // 2
+            center_y = height // 2
+            
+            # 중앙 좌표로 클릭 해제 이벤트 전송
+            win32gui.PostMessage(hwnd, win32con.WM_RBUTTONUP, 0, center_y << 16 | center_x)
     
     def auto_right_click(self):
         while self.is_running:
